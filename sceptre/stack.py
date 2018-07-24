@@ -53,7 +53,7 @@ class Stack(object):
 
     def __init__(
         self, name, project_code, template_path, region, parameters=None,
-        sceptre_user_data=None, hooks=None, s3_details=None,
+        sceptre_user_data=None, stack_config=None, hooks=None, s3_details=None,
         dependencies=None, role_arn=None, protected=False, tags=None,
         external_name=None, notifications=None, on_failure=None, profile=None,
         stack_timeout=0
@@ -85,6 +85,7 @@ class Stack(object):
         self.hooks = hooks or {}
         self.parameters = parameters or {}
         self.sceptre_user_data = sceptre_user_data or {}
+        self.stack_config = stack_config or {}
         self.notifications = notifications or []
 
     def __repr__(self):
@@ -127,6 +128,7 @@ class Stack(object):
             self._template = Template(
                 path=self.template_path,
                 sceptre_user_data=self.sceptre_user_data,
+                stack_config=self.stack_config,
                 s3_details=self.s3_details,
                 connection_manager=self.connection_manager
             )

@@ -23,6 +23,7 @@ def create_command(ctx, path, change_set_name, yes):
     action = "create"
 
     stack, _ = get_stack_or_env(ctx, path)
+    print(stack)
     if change_set_name:
         confirmation(action, yes, change_set=change_set_name, stack=path)
         stack.create_change_set(change_set_name)

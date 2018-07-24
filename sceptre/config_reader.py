@@ -85,7 +85,6 @@ class ConfigReader(object):
 
         if not variables:
             variables = {}
-
         self.templating_vars = {"var": variables}
 
     def _add_yaml_constructors(self, entry_point_groups):
@@ -311,11 +310,11 @@ class ConfigReader(object):
         if filename != "config.yaml":
             self.templating_vars["environment_config"] = environment_config
             config = self.read(rel_path, environment_config)
+
             stack_name = path.splitext(rel_path)[0]
             abs_template_path = path.join(
                 self.sceptre_dir, config["template_path"]
             )
-
             s3_details = self._collect_s3_details(
                 stack_name, config
             )
@@ -328,6 +327,7 @@ class ConfigReader(object):
                 profile=config.get("profile"),
                 parameters=config.get("parameters", {}),
                 sceptre_user_data=config.get("sceptre_user_data", {}),
+                stack_config=config,
                 hooks=config.get("hooks", {}),
                 s3_details=s3_details,
                 dependencies=config.get("dependencies", []),
@@ -357,7 +357,10 @@ class ConfigReader(object):
             )
         directory = path.split(rel_path)[0]
         environment_config = self.read(path.join(directory, "config.yaml"))
-        return self._construct_stack(rel_path, environment_config)
+        # print(locals())
+        stack = self._construct_stack(rel_path, environment_config)
+
+        return stack
 
     def construct_environment(self, rel_path):
         """

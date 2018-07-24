@@ -104,10 +104,10 @@ def get_stack_or_env(ctx, path):
     config_reader = ConfigReader(
         ctx.obj["sceptre_dir"], ctx.obj["user_variables"]
     )
-
     if os.path.splitext(path)[1]:
         stack = config_reader.construct_stack(path)
     else:
+
         env = config_reader.construct_environment(path)
 
     return (stack, env)

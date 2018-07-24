@@ -22,6 +22,8 @@ class StackOutputBase(Resolver):
     def __init__(self, *args, **kwargs):
         self.logger = logging.getLogger(__name__)
         super(StackOutputBase, self).__init__(*args, **kwargs)
+        print('StackOutputBase')
+        print(args,kwargs)
 
     def _get_output_value(self, stack_name, output_key, profile=None):
         """

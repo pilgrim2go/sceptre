@@ -35,12 +35,13 @@ class Template(object):
     _boto_s3_lock = threading.Lock()
 
     def __init__(
-        self, path, sceptre_user_data, connection_manager=None, s3_details=None
+        self, path, sceptre_user_data, stack_config=None, connection_manager=None, s3_details=None,
     ):
         self.logger = logging.getLogger(__name__)
 
         self.path = path
         self.sceptre_user_data = sceptre_user_data
+        self.stack_config = stack_config or {}
         self.connection_manager = connection_manager
         self.s3_details = s3_details
 
@@ -118,7 +119,7 @@ class Template(object):
         module = imp.load_source(self.name, self.path)
 
         try:
-            body = module.sceptre_handler(self.sceptre_user_data)
+            body = module.sceptre_handler(self.sceptre_user_data, self.stack_config)
         except AttributeError as e:
             if 'sceptre_handler' in str(e):
                 raise TemplateSceptreHandlerError(

@@ -66,7 +66,7 @@ def cli(
         for fh in var_file:
             parsed = yaml.safe_load(fh.read())
             ctx.obj["user_variables"].update(parsed)
-
+            # print(parsed)
             # the rest of this block is for debug purposes only
             existing_keys = set(ctx.obj["user_variables"].keys())
             new_keys = set(parsed.keys())

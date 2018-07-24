@@ -65,6 +65,8 @@ setup(
             "environment_variable ="
             "sceptre.resolvers.environment_variable:EnvironmentVariable",
             "file_contents = sceptre.resolvers.file_contents:FileContents",
+            "template_contents = sceptre.resolvers.template_contents:TemplateContents",
+
             "stack_output = sceptre.resolvers.stack_output:StackOutput",
             "stack_output_external ="
             "sceptre.resolvers.stack_output:StackOutputExternal"
