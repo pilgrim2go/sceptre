@@ -1,7 +1,7 @@
 import click
 
 from sceptre.cli.helpers import catch_exceptions, confirmation
-from sceptre.cli.helpers import get_stack_or_env
+from sceptre.cli.helpers import get_stack_or_stack_group
 from sceptre.stack_status import StackStatus
 
 
@@ -22,8 +22,13 @@ def create_command(ctx, path, change_set_name, yes):
     """
     action = "create"
 
-    stack, _ = get_stack_or_env(ctx, path)
-    print(stack)
+    # <<<<<<< HEAD
+    #     stack, _ = get_stack_or_env(ctx, path)
+    #     print(stack)
+    # =======
+    #     stack, _ = get_stack_or_stack_group(ctx, path)
+    # >>>>>>> cfb45a0c7c9e4567f765d4ee4c7dbfe05ebfa0b9
+    stack, _ = get_stack_or_stack_group(ctx, path)
     if change_set_name:
         confirmation(action, yes, change_set=change_set_name, stack=path)
         stack.create_change_set(change_set_name)
