@@ -384,46 +384,46 @@ class ConfigReader(object):
         return self._construct_stack(rel_path, stack_group_config)
 
 
-def construct_stack_group(self, rel_path):
-        """
-        Construct a StackGroup object from a stack_group path
-        with all associated sub-stack_groups and stack objects.
+    def construct_stack_group(self, rel_path):
+            """
+            Construct a StackGroup object from a stack_group path
+            with all associated sub-stack_groups and stack objects.
 
-        :param rel_path: A relative stack_group path from the config
-        folder.
-        :type rel_path: str
-        """
-        if not path.isdir(path.join(self.config_folder, rel_path)):
-            raise StackGroupNotFoundError(
-                "StackGroup not found for '{}'".format(rel_path)
-            )
-        stack_group_config = self.read(
-            path.join(rel_path, "config.yaml")
-          )
-        stack_group = StackGroup(rel_path)
-
-        items = glob(
-            path.join(self.sceptre_dir, "config", rel_path, "*")
-        )
-
-        paths = {
-            item: path.relpath(
-                item, path.join(self.sceptre_dir, "config")
-            )
-            for item in items if not item.endswith("config.yaml")
-        }
-
-        is_leaf = not any([path.isdir(abs_path) for abs_path in paths.keys()])
-
-        for abs_path, rel_path in paths.items():
-            if not is_leaf and path.isdir(abs_path):
-                stack_group.sub_stack_groups.append(
-                    self.construct_stack_group(rel_path)
+            :param rel_path: A relative stack_group path from the config
+            folder.
+            :type rel_path: str
+            """
+            if not path.isdir(path.join(self.config_folder, rel_path)):
+                raise StackGroupNotFoundError(
+                    "StackGroup not found for '{}'".format(rel_path)
                 )
-            elif is_leaf and path.isfile(abs_path):
-                stack = self._construct_stack(
-                    rel_path, copy.deepcopy(stack_group_config)
-                )
-                stack_group.stacks.append(stack)
+            stack_group_config = self.read(
+                path.join(rel_path, "config.yaml")
+              )
+            stack_group = StackGroup(rel_path)
 
-        return stack_group
+            items = glob(
+                path.join(self.sceptre_dir, "config", rel_path, "*")
+            )
+
+            paths = {
+                item: path.relpath(
+                    item, path.join(self.sceptre_dir, "config")
+                )
+                for item in items if not item.endswith("config.yaml")
+            }
+
+            is_leaf = not any([path.isdir(abs_path) for abs_path in paths.keys()])
+
+            for abs_path, rel_path in paths.items():
+                if not is_leaf and path.isdir(abs_path):
+                    stack_group.sub_stack_groups.append(
+                        self.construct_stack_group(rel_path)
+                    )
+                elif is_leaf and path.isfile(abs_path):
+                    stack = self._construct_stack(
+                        rel_path, copy.deepcopy(stack_group_config)
+                    )
+                    stack_group.stacks.append(stack)
+
+            return stack_group
